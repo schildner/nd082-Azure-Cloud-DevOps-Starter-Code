@@ -1,0 +1,26 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "tagging-policy",
+  "properties": {
+    "mode": "indexed",
+    "displayName": "Audit tags on Resources",
+    "description": "This policy audits whether any Resource has at least one tag.",
+    "policyRule": {
+      "if": {
+        "allof": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/blabla"
+          },
+          {
+            "field": "Microsoft.Compute/blabla/subresource",
+            "equals": "false"
+          }
+        ]}
+      "then": {
+        "effect": "deny"
+      }
+    
+    }
+  }
+}
