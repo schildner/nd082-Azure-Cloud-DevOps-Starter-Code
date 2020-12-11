@@ -5,12 +5,12 @@ az policy definition create \
   --display-name "Deny creation of Resources with no tags" \
   --mode "Indexed" \
   --rules tagging-policy-rule.json \
-  --subscription "707a2a01-f589-4fbf-8753-b278612b58ef"
+  --subscription "$ARM_SUBSCRIPTION_ID"
 
 # create policy definition assignment
 az policy assignment create \
   --name tagging-policy-assignment \
   --policy tagging-policy \
-  --scope "/subscriptions/707a2a01-f589-4fbf-8753-b278612b58ef" \
+  --scope "/subscriptions/$ARM_SUBSCRIPTION_ID" \
   --display-name "Assignment of tagging-policy to all Resources in the subscription." \
   --sku "free"

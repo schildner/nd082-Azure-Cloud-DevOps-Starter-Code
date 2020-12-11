@@ -18,6 +18,10 @@ For this project, you will write a Packer template and a Terraform template to d
 
 ### Instructions
 **Your words here**
+Make sure the following environment variables are set to azure account details:
+ARM_CLIENT_ID
+ARM_CLIENT_SECRET
+ARM_SUBSCRIPTION_ID
 
 ### Output
 **Your words here**

@@ -20,7 +20,7 @@
 		"image_sku": "18.04-LTS",
 
 		"managed_image_resource_group_name": "udacity-azure-course-project1-iac-rg",
-		"managed_image_name": "ubuntuLinuxVmImage",
+		"managed_image_name": "Ubuntu1804Image",
 
 		"location": "West Europe",
 		"vm_size": "Standard_A2_v2"
