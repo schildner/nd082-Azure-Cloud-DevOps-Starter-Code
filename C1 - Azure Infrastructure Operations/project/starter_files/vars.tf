@@ -1,6 +1,11 @@
+variable "loc_short" {
+  description = "The Azure Region shortcut which will be part of prefix for all resources."
+  default = "we"
+}
+
 variable "prefix" {
   description = "The prefix which should be used for all resources in this example"
-  default = "udacity-azure-course-project1-iac"
+  default = "${var.loc_short}-udacity-azure-course-project1-iac"
 }
 
 variable "location" {
