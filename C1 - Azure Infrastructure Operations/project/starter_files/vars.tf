@@ -5,7 +5,7 @@ variable "loc_short" {
 
 variable "prefix" {
   description = "The prefix which should be used for all resources in this example"
-  default = "${var.loc_short}-udacity-azure-course-project1-iac"
+  default = "udacity-azure-course-project1-iac"
 }
 
 variable "location" {
@@ -19,9 +19,16 @@ variable "username" {
 
 variable "password" {
   description = "The VM users password."
+  sensitive = true
 }
 
 variable "number_of_vms" {
-  description = "The number of Virtual Machines to be deployed"
-  default = "1"
+  description = "The number of Virtual Machines to be deployed."
+  type        = number
+  default     = "3"
+}
+
+variable "packer_image" {
+  description = "The ID of the image created by packer tool."
+  default = "/subscriptions/707a2a01-f589-4fbf-8753-b278612b58ef/resourceGroups/we-udacity-azure-course-project1-iac-rg/providers/Microsoft.Compute/images/Ubuntu1804Image"
 }

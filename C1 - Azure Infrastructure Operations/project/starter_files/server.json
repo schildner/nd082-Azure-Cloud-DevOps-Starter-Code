@@ -12,14 +12,15 @@
 		"subscription_id": "{{user `subscription_id`}}",
 
 		"azure_tags": {
-			"custom": "tag1"
+			"project_name": "IaC",
+			"stage": "Submission"
 		},
 		"os_type": "Linux",
 		"image_publisher": "Canonical",
 		"image_offer": "UbuntuServer",
 		"image_sku": "18.04-LTS",
 
-		"managed_image_resource_group_name": "udacity-azure-course-project1-iac-rg",
+		"managed_image_resource_group_name": "we-udacity-azure-course-project1-iac-rg",
 		"managed_image_name": "Ubuntu1804Image",
 
 		"location": "West Europe",
