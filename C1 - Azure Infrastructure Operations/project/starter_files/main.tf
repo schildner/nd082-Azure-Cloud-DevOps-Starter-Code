@@ -9,45 +9,13 @@ resource "azurerm_resource_group" "main" {
 
 resource "azurerm_virtual_network" "main" {
   name                = "${var.prefix}-nw"
-  address_space       = ["10.0.2.0/24"]
+  address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-}
 
-resource "azurerm_subnet" "main" {
-  name                 = "${var.prefix}-subnet"
-  resource_group_name  = azurerm_resource_group.main.name
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.2.0/24"]
-}
-
-resource "azurerm_network_interface" "main" {
-  name                = "${var.prefix}-nic"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
-
-  ip_configuration {
-    name                          = "main"
-    subnet_id                     = azurerm_subnet.main.id
-    private_ip_address_allocation = "Dynamic"
+  tags = {
+    environment = "Production"
   }
-}
-
-resource "azurerm_lb" "main" {
-  name                = "${var.prefix}-lb"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-
-  frontend_ip_configuration {
-    name                 = "PublicIPAddress"
-    public_ip_address_id = azurerm_public_ip.main.id
-  }
-}
-
-resource "azurerm_lb_backend_address_pool" "main" {
-  resource_group_name = azurerm_resource_group.main.name
-  loadbalancer_id     = azurerm_lb.main.id
-  name                = "BackEndAddressPool"
 }
 
 resource "azurerm_network_security_group" "main" {
@@ -82,6 +50,51 @@ resource "azurerm_network_security_group" "main" {
   tags = {
     environment = "Production"
   }
+}
+
+resource "azurerm_subnet" "main" {
+  name                 = "${var.prefix}-subnet1"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  security_group       = azurerm_network_security_group.main.id
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_network_interface" "main" {
+  name                = "${var.prefix}-nic"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+
+  ip_configuration {
+    name                          = "main"
+    subnet_id                     = azurerm_subnet.main.id
+    private_ip_address_allocation = "Dynamic"
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+resource "azurerm_lb" "main" {
+  name                = "${var.prefix}-lb"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.main.id
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "main" {
+  resource_group_name = azurerm_resource_group.main.name
+  loadbalancer_id     = azurerm_lb.main.id
+  name                = "BackEndAddressPool"
 }
 
 resource "azurerm_public_ip" "main" {
