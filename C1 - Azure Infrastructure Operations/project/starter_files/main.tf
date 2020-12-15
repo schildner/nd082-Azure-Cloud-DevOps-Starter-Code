@@ -41,8 +41,20 @@ resource "azurerm_network_security_group" "main" {
   }
 
   security_rule {
-    name                       = "DenyInboundInternet"
+    name                       = "AllowInboundSameSubnetVms"
     priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "VirtualNetwork"
+  }
+
+  security_rule {
+    name                       = "DenyInboundInternet"
+    priority                   = 120
     direction                  = "Inbound"
     access                     = "Deny"
     protocol                   = "*"
@@ -66,7 +78,8 @@ resource "azurerm_subnet" "main" {
 }
 
 resource "azurerm_network_interface" "main" {
-  name                = "${var.loc_short}-${var.prefix}-nic"
+  count               = var.number_of_vms
+  name                = "${var.loc_short}-${var.prefix}-nic-${count.index}"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
 
@@ -93,12 +106,17 @@ resource "azurerm_linux_virtual_machine" "main" {
   source_image_id                 = var.packer_image
   disable_password_authentication = false
   network_interface_ids = [
-    azurerm_network_interface.main.id,
+    element(azurerm_network_interface.main.*.id, count.index)
   ]
 
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
+  }
+
+  tags = {
+    project_name = "IaC"
+    stage        = "Submission"
   }
 }
 

@@ -25,7 +25,7 @@ variable "password" {
 variable "number_of_vms" {
   description = "The number of Virtual Machines to be deployed."
   type        = number
-  default     = "3"
+  default     = "2"
 }
 
 variable "packer_image" {
